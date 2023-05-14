@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+ web:
+  build:
+   context: .
+  ports:
+  - "8000:5000"
+
+ db:
+  image: postgres
+  ports:
+  - "5432:5432"
+  environment:
+  - POSTGRES_DB=suppliers
+  - POSTGRES_USER=postgres
+  - POSTGRES_PASSWORD=p@ssw0rd1
+  volumes:
+  - postgresql:/var/lib/postgres
+  - postgresql_config:/etc/postgresql_config
+
+volumes:
+  postgresql:
+  postgresql_config:
+
+networks:
+ app:

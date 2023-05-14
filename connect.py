@@ -1,9 +1,17 @@
 import psycopg2
+import os
 
 from db_config import get_db_config
 
+in_docker = os.environ.get('AM_I_IN_A_DOCKER_CONTAINER', False)
 
-conn = psycopg2.connect(**get_db_config())
+if in_docker:
+    # read connection parameters
+    CONFIG_FILE = "database.ini"
+else:
+    CONFIG_FILE = "database-martin.ini"
+
+conn = psycopg2.connect(**get_db_config(CONFIG_FILE))
 
 
 def connect():
@@ -12,7 +20,7 @@ def connect():
     ret = ""
     try:
         # read connection parameters
-        params = get_db_config()
+        params = get_db_config(CONFIG_FILE)
 
         # connect to the PostgreSQL server
         ret += 'Connecting to the PostgreSQL database...\n'
